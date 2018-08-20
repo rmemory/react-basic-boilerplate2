@@ -3,14 +3,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ZipCode from './ZipCode.jsx';
+// import ZipCode from './ZipCode.jsx';
 
 const NavBar = ({ history }) => (
 	<div className="navbar">
 		<h1>
 			The weather app
 		</h1>
-		<ZipCode
+		{/* Temporarily comment this out until I sort out the DayItem and Forecast */}
+		{/* <ZipCode
 			direction="row"
 			onSubmitZipcode={(city) => {
 				history.push({
@@ -18,7 +19,7 @@ const NavBar = ({ history }) => (
 					search: `?city=${city}`,
 				});
 			}}
-		/>
+		/> */}
 	</div>
 );
 
