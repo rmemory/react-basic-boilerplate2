@@ -9,13 +9,22 @@ const AppContext = React.createContext();
 // State provider
 class AppStateProvider extends Component {
 	state = {
-		greeting: '',
 		errors: [],
 		isCycling: false,
-		isCurrentWeatherLoading: false,
-		currentWeather: {},
-		isWeatherForecastLoading: false,
-		weatherForecast: {},
+		isCurrentConditionsLoading: false,
+		weatherConditions: {
+			zip: '',
+			datetime: 0,
+			description: '',
+			main: {},
+			weather: {},
+		},
+
+		isForecastLoading: false,
+		weatherForecast: {
+			zip: '',
+			data: [],
+		},
 	}
 
 	render() {
@@ -29,9 +38,6 @@ class AppStateProvider extends Component {
 					state: this.state,
 
 					// State API
-					setGreeting: greeting => this.setState({
-						greeting,
-					}),
 					clearErrors: () => this.setState({
 						errors: [],
 					}),
@@ -41,17 +47,17 @@ class AppStateProvider extends Component {
 					toggleCycling: () => this.setState({
 						isCycling: !isCycling,
 					}),
-					setCurrentWeatherLoading: isCurrentWeatherLoading => this.setState({
-						isCurrentWeatherLoading,
+					setWeatherConditions: weatherConditions => this.setState({
+						weatherConditions,
 					}),
-					setCurrentWeather: weather => this.setState({
-						currentWeather: weather,
+					setCurrentConditionsLoading: isCurrentConditionsLoading => this.setState({
+						isCurrentConditionsLoading,
 					}),
-					setWeatherForecastLoading: isWeatherForecastLoading => this.setState({
-						isWeatherForecastLoading,
+					setForecastLoading: isForecastLoading => this.setState({
+						isForecastLoading,
 					}),
-					setWeatherForecast: forecast => this.setState({
-						weatherForecast: forecast,
+					setForecast: weatherForecast => this.setState({
+						weatherForecast,
 					}),
 				}}
 			>

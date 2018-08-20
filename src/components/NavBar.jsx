@@ -1,25 +1,25 @@
-/* eslint-disable react/jsx-indent-props */
+/* eslint-disable react/jsx-indent-props, react/jsx-one-expression-per-line */
 
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import ZipCode from './ZipCode.jsx';
 
 const NavBar = ({ history }) => (
-	<Fragment>
-		<div className="navbar">
-			<h1>The Weather where you are ... or anywhere</h1>
-			<ZipCode
-				direction="row"
-				onSubmitZipcode={(city) => {
-					history.push({
-						pathname: '/forecast',
-						search: `?city=${city}`,
-					});
-				}}
-			/>
-		</div>
-	</Fragment>
+	<div className="navbar">
+		<h1>
+			The weather app
+		</h1>
+		<ZipCode
+			direction="row"
+			onSubmitZipcode={(city) => {
+				history.push({
+					pathname: '/forecast',
+					search: `?city=${city}`,
+				});
+			}}
+		/>
+	</div>
 );
 
 NavBar.propTypes = {

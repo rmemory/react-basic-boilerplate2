@@ -1,11 +1,11 @@
 /* eslint-disable react/jsx-one-expression-per-line, react/jsx-indent-props */
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { BrowserRouter, Route } from 'react-router-dom';
 
 import AppContext from './AppState.jsx';
 import NavBar from './NavBar.jsx';
-import CurrentWeatherDetail from './CurrentWeatherDetail.jsx';
+import WeatherConditions from './WeatherConditions.jsx';
 import Forecast from './Forecast.jsx';
 
 import { getCurrentWeatherByLatLon } from '../utils/openweather_api.js';
@@ -20,55 +20,45 @@ class BaseWelcomePage extends Component {
 	componentDidMount() {
 		const { context } = this.props;
 		const {
-			setGreeting,
-			setCurrentWeatherLoading,
-			setCurrentWeather,
+			setWeatherConditions,
+			setCurrentConditionsLoading,
 		} = context;
 
-		setCurrentWeatherLoading(true);
+		setCurrentConditionsLoading(true);
 		getCurrentWeatherByLatLon(/* null means get current location */)
 			.then((response) => {
 				console.log(response);
 				if (response.errMsg === undefined) {
-					setCurrentWeather(response.data);
-					setGreeting(
-						`Hello in ${response.data.name}!`,
-					);
-					setCurrentWeatherLoading(false);
+					setWeatherConditions({
+						zip: response.data.name,
+						datetime: response.data.dt,
+						main: response.data.main,
+						weather: response.data.weather[0],
+					});
+					setCurrentConditionsLoading(false);
 				} else {
 					// Todo
-					setCurrentWeatherLoading(false);
+					setCurrentConditionsLoading(false);
 				}
 			});
 	}
 
 	render() {
-		const { context } = this.props;
-		const { greeting, currentWeather } = context.state;
-
 		return (
 			<BrowserRouter>
 				<div className="container">
+					{/* Always render the NavBar */}
 					<Route component={NavBar} />
 					<Route
-						exact
-						path="/"
+						exact path="/" // eslint-disable-line react/jsx-max-props-per-line
 						render={() => (
-							<Fragment>
-								<div className="hello">
-									{ greeting }
-									{ greeting
-										&& <p>(or hopefully somewhere close)</p>
-									}
-								</div>
-								<CurrentWeatherDetail currentWeatherData={currentWeather} />
-							</Fragment>
+							// Could use component here, but demo using direct render
+							<WeatherConditions />
 						)
 						}
 					/>
 					<Route path="/forecast" component={Forecast} />
-
-					<Route path="/details/:city" component={CurrentWeatherDetail} />
+					<Route path="/details/:city" component={WeatherConditions} />
 				</div>
 			</BrowserRouter>
 		);

@@ -31,27 +31,25 @@ Forecast.propTypes = {
 
 class BaseForecast extends Component {
 	componentDidMount() {
-		const { location } = this.props;
-
-		this.city = queryString.parse(location.search).city;
-		this.makeRequest(this.city);
-	}
-
-	makeRequest = (city) => {
-		const { context } = this.props;
+		const { context, location } = this.props;
 		const {
-			setWeatherForecastLoading,
-			setWeatherForecast,
+			setForecastLoading,
+			setForecast,
 		} = context;
 
-		setWeatherForecastLoading(true);
-		getForecastByCity(city)
+		this.city = queryString.parse(location.search).city;
+
+		setForecastLoading(true);
+		getForecastByCity(this.city)
 			.then((response) => {
 				console.log(response);
-				setWeatherForecast(response.data);
-				setWeatherForecastLoading(false);
+				setForecast({
+					zip: response.data.city,
+					data: response.data.list,
+				});
+				setForecastLoading(false);
 			});
-	};
+	}
 
 	handleClick = (city) => {
 		const { history } = this.props;
@@ -65,10 +63,10 @@ class BaseForecast extends Component {
 
 	render() {
 		const { context } = this.props;
-		const { isWeatherForecastLoading, weatherForecast } = context.state;
+		const { isForecastLoading, weatherForecast } = context.state;
 
-		return isWeatherForecastLoading === true
-				|| !weatherForecast.list
+		return isForecastLoading === true
+				|| !weatherForecast.data
 			? (
 				<h1 className="forecast-header">
 					<Loading />
@@ -78,7 +76,7 @@ class BaseForecast extends Component {
 				<div>
 					<h1 className="forecast-header">{this.city}</h1>
 					<div className="forecast-container">
-						{weatherForecast.list.map((listItem) => {
+						{weatherForecast.data.map((listItem) => {
 							return (
 								<DayItem
 									onClick={this.handleClick.bind(this, listItem)}
@@ -86,7 +84,7 @@ class BaseForecast extends Component {
 									day={listItem}
 								/>
 							);
-						}, this)}
+						})}
 					</div>
 				</div>
 			);

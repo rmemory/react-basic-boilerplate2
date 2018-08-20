@@ -13,12 +13,15 @@ const DayItem = () => (
 					&& <Loading text="Loading weather data" />
 				}
 
-				{!context.state.isCurrentWeatherLoading && context.state.currentWeather.weather
+				{!context.state.isCurrentWeatherLoading
+					&& context.state.weatherConditions.weather.icon
+					&& context.state.weatherConditions.datetime
 					&& (
 						<div className="dayContainer">
-							{/* <p>{JSON.stringify(context.state.currentWeather.weather[0], null, 2)}</p> */}
-							<img className="weather" src={`/images/weather-icons/${context.state.currentWeather.weather[0].icon}.svg`} alt="Weather" />
-							<h2 className="subheader">{getDate(context.state.currentWeather.dt)}</h2>
+							{/* <p>{JSON.stringify(context.state.weatherConditions.weather, null, 2)}</p> */}
+							<h2 className="subheader">{getDate(context.state.weatherConditions.datetime)}</h2>
+							<img className="weather" src={`/images/weather-icons/${context.state.weatherConditions.weather.icon}.svg`} alt="Weather" />
+							<p>{context.state.weatherConditions.weather.description}</p>
 						</div>
 					)
 				}
