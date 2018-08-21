@@ -11,8 +11,11 @@ const port = process.env.PORT || 3000;
 
 const config = {
 	entry: {
-		/* babel-polyfill is used for promises and whatnot, index.js is the
-		   primary application entry point */
+		/* babel-polyfill is used for promises and whatnot. Stated differently,
+		   babel-loader handles all of the transpiled features, while the babel
+		   polyfill is used to extend the browser to feature that cannot be
+		   transpiled. Meaning, index.js below is the primary application entry
+		   point */
 		app: ['babel-polyfill', './src/index.js'],
 
 		// Split out a vendor specific packages into a vendor module
